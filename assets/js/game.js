@@ -6,10 +6,13 @@ $(document).ready(function () {
       $("#buttons").append(button);
     };
   function makeButtons () {
-  var topics = ["Bird","Eevee","Puppies"];
+    $("#buttons").empty();
 
     for(i = 0; i < topics.length; i++) {
-      var button = $("<button>" + topics[i] + "</button>").addClass("btn btn-primary").attr("data-person",topics[i]);
+      var button = $("<button>")
+      button.addClass("btn btn-primary")
+      button.attr("data-person",topics[i]);
+      button.text(topics[i]);
       $("#buttons").append(button);
     };
   };
@@ -33,7 +36,7 @@ $(document).ready(function () {
 
           var rating = results[i].rating;
 
-          var p = $("<span>").text("Rating: " + rating);
+          var p = $("<p>").text("Rating: " + rating);
 
           var Image= $("<img>");
 
@@ -56,9 +59,9 @@ $(document).ready(function () {
   });
   // I can't seem to get the computer to recogonise this as a click function as it doesn't return the console.log
   $(".gif").on("click", function() {
-    event.preventDefault();
+    
     var state = $(this).attr("data-state");
-    console.log("Derp");
+    
   
     if (state ==="still") 
       {
@@ -73,10 +76,11 @@ $(document).ready(function () {
     
     
   });
-  // Seems that I have an issue with adding the value properly as a button. It does display in the console, but only for a split second
   $("#button").on("click", function() {
+    event.preventDefault();
     var more = $("#bar").val();
     topics.push(more);
+    console.log(topics);
     console.log(more);
     makeButtons();
   });
