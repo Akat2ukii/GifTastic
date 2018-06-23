@@ -1,11 +1,13 @@
 $(document).ready(function () {
   var topics = ["Bird","Eevee","Puppies"];
-
-    for(i = 0; i < topics.length; i++) {
-      var button = $("<button>" + topics[i] + "</button>").addClass("btn btn-primary").attr("data-person",topics[i]);
-      $("#buttons").append(button);
-    };
+//Let the previous topics display as buttons
+  for(i = 0; i < topics.length; i++) {
+    var button = $("<button>" + topics[i] + "</button>").addClass("btn btn-primary").attr("data-person",topics[i]);
+    $("#buttons").append(button)
+  };
+//Function to creates new buttons
   function makeButtons () {
+    // For some reason, the prior 3 buttons were held in the cache; so, we have to empty them
     $("#buttons").empty();
 
     for(i = 0; i < topics.length; i++) {
@@ -16,7 +18,7 @@ $(document).ready(function () {
       $("#buttons").append(button);
     };
   };
-  
+//Click even for the buttons to pull the images from the api and place them into the givDiv
   $("#buttons").on("click",".btn",function() {
     var person = $(this).attr("data-person");
     var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
@@ -42,10 +44,10 @@ $(document).ready(function () {
 
           Image.attr("src", results[i].images.fixed_height_still.url);
 	 			  Image.attr("data-still", results[i].images.fixed_height_still.url);
-	 			  Image.attr("data-animate", results[i].images.fixed_height.url)
-	 			  Image.attr("data-state", "still")
-          Image.addClass("gif");
-          $(".gif").css({ "float": "left", "margin": "50px 20px 0px 20px",});
+	 			  Image.attr("data-animate", results[i].images.fixed_height.url);
+	 			  Image.attr("data-state", "still");
+          Image.attr("class", "rawr");
+          $(".item").css({"float": "left", "margin": "50px 20px 0px 20px",});
            
 
           gifDiv.append(Image);
@@ -55,27 +57,32 @@ $(document).ready(function () {
           $("#gifs").prepend(gifDiv);
           console.log(Image);
         }
+        $(".rawr").on("click", function() {
+          event.preventDefault();
+          console.log("click!");
+          
+          var state = $(this).attr("data-state");
+          var animate= $(this).attr("data-animate");
+          var still = $(this).attr("data-still");
+          
+        
+          if (state ==="still") 
+            {
+              $(this).attr("src", animate);
+              $(this).attr("data-state","animate");
+            }
+            else
+            {
+              $(this).attr("src", still);
+              $(this).attr("data-state","still");    
+            }
+          
+          
+        });
       });
   });
-  // I can't seem to get the computer to recogonise this as a click function as it doesn't return the console.log
-  $(".gif").on("click", function() {
-    
-    var state = $(this).attr("data-state");
-    
   
-    if (state ==="still") 
-      {
-        $(this).attr("src",$(this).attr("data-animate"));
-        $(this).attr("data-state","animate");
-      }
-      else
-      {
-        $(this).attr("src",$(this).attr("data-still"));
-        $(this).attr("data-state","still");    
-      }
-    
-    
-  });
+//Click the submit button to make a new button
   $("#button").on("click", function() {
     event.preventDefault();
     var more = $("#bar").val();
